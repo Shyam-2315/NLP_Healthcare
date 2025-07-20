@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Medical Coding Crisis: An Interactive Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 100%);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card-hover {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card-hover:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 8px 32px rgba(59,130,246,0.12), 0 1.5px 6px rgba(0,0,0,0.04);
+        }
+        .icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3b82f6 60%, #6366f1 100%);
+            color: #fff;
+            font-size: 1.7rem;
+            margin-bottom: 0.75rem;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.12);
+        }
+        .footer-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+        <main class="w-full max-w-7xl mx-auto">
+            <header class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight drop-shadow-lg">The Crisis in Medical Coding</h1>
+                <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">The current system for medical coding is inefficient and outdated, leading to significant financial losses, operational delays, and a growing workforce shortage. This report explores the scale of these critical issues.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex flex-col card-hover">
+                    <div class="icon-circle mx-auto mb-2">
+                        <i class="fa-solid fa-money-bill-trend-up"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">The Staggering Financial Waste</h2>
+                    <p class="mt-2 text-slate-600 mb-4">Manual coding errors contribute to billions in waste annually. For hospitals, this translates into millions of dollars in lost revenue per facility. This section allows you to see how quickly that loss accumulates across multiple hospitals.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center flex-grow">
+                        <div class="flex flex-col justify-center">
+                            <div class="bg-slate-100 p-4 rounded-lg text-center shadow">
+                                <p class="text-lg text-slate-600">Total Annual Waste</p>
+                                <p class="text-4xl font-bold text-blue-600 animate-pulse">$3 Billion</p>
+                            </div>
+                            <div class="mt-4">
+                                <label for="hospital-slider" class="block text-md font-medium text-slate-700">Adjust Number of Hospitals:</label>
+                                <input id="hospital-slider" type="range" min="1" max="100" value="10" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                                <p class="text-center mt-2 text-slate-600">Financial Loss for <span id="hospital-count" class="font-bold text-slate-900">10</span> hospitals</p>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="financialWasteChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex flex-col card-hover">
+                    <div class="icon-circle mx-auto mb-2" style="background: linear-gradient(135deg, #ef4444 60%, #f59e42 100%);">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">Slower Billing Cycles</h2>
+                    <p class="mt-2 text-slate-600 flex-grow">Manual processes create significant bottlenecks, slowing down the entire billing cycle by 40%. This inefficiency directly impacts cash flow and operational stability for healthcare providers.</p>
+                    <div class="chart-container mt-4">
+                        <canvas id="billingCycleChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-lg border border-slate-200 flex flex-col card-hover">
+                    <div class="icon-circle mx-auto mb-2" style="background: linear-gradient(135deg, #6366f1 60%, #3b82f6 100%);">
+                        <i class="fa-solid fa-user-nurse"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900">The Growing Coder Shortage</h2>
+                    <p class="mt-2 text-slate-600 mb-4">The industry is facing a severe shortage of qualified medical coders. Projections show a significant deficit in the coming years, which will only exacerbate existing financial and operational problems. The chart below visualizes this looming workforce crisis.</p>
+                    <div class="chart-container w-full max-w-4xl mx-auto">
+                        <canvas id="coderShortageChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+            <footer class="footer-gradient text-center mt-12 py-6 rounded-xl shadow-lg">
+                <p class="text-lg font-semibold">An interactive summary of challenges in the medical coding industry.</p>
+                <div class="mt-2 flex justify-center gap-4 text-white text-xl">
+                    <a href="#" title="Share" class="hover:text-blue-200"><i class="fa-solid fa-share-nodes"></i></a>
+                    <a href="#" title="Contact" class="hover:text-blue-200"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="#" title="Learn More" class="hover:text-blue-200"><i class="fa-solid fa-circle-info"></i></a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const FONT_COLOR = '#334155';
+            const GRID_COLOR = '#e2e8f0';
+
+            const financialWasteData = {
+                lossPerHospital: 8_000_000,
+            };
+
+            const hospitalSlider = document.getElementById('hospital-slider');
+            const hospitalCountEl = document.getElementById('hospital-count');
+
+            const financialWasteCtx = document.getElementById('financialWasteChart').getContext('2d');
+            const financialWasteChart = new Chart(financialWasteCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Annual Loss'],
+                    datasets: [{
+                        label: 'Total Loss ($)',
+                        data: [financialWasteData.lossPerHospital * hospitalSlider.value],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + (value / 1000000) + 'M';
+                                },
+                                color: FONT_COLOR,
+                            },
+                             grid: {
+                                color: GRID_COLOR,
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: FONT_COLOR,
+                            },
+                            grid: {
+                                display: false,
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Total Loss: $${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            hospitalSlider.addEventListener('input', (event) => {
+                const count = event.target.value;
+                hospitalCountEl.textContent = count;
+                const newTotalLoss = financialWasteData.lossPerHospital * count;
+                financialWasteChart.data.datasets[0].data[0] = newTotalLoss;
+                financialWasteChart.update();
+            });
+
+            const billingCycleCtx = document.getElementById('billingCycleChart').getContext('2d');
+            const billingCycleChart = new Chart(billingCycleCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Efficient Process Time', 'Manual Coding Delay'],
+                    datasets: [{
+                        data: [60, 40],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(239, 68, 68, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                           position: 'bottom',
+                           labels: {
+                               color: FONT_COLOR,
+                           }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Billing Cycle Composition',
+                            color: FONT_COLOR,
+                            font: {
+                                size: 16
+                            }
+                        },
+                        tooltip: {
+                           callbacks: {
+                               label: function(context) {
+                                   return `${context.label}: ${context.raw}% of total cycle time`;
+                               }
+                           }
+                        }
+                    }
+                }
+            });
+            
+            const coderShortageCtx = document.getElementById('coderShortageChart').getContext('2d');
+            const coderShortageChart = new Chart(coderShortageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2022', '2023', '2024', '2025'],
+                    datasets: [{
+                        label: 'Projected Coder Deficit',
+                        data: [8, 14, 18, 20],
+                        fill: true,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: 'rgba(239, 68, 68, 1)',
+                        tension: 0.3,
+                        pointBackgroundColor: 'rgba(239, 68, 68, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(239, 68, 68, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                },
+                                color: FONT_COLOR,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Workforce Deficit (%)',
+                                color: FONT_COLOR,
+                            },
+                             grid: {
+                                color: GRID_COLOR,
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: FONT_COLOR,
+                            },
+                             grid: {
+                                color: GRID_COLOR,
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                           display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Projected Deficit: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
