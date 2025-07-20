@@ -1,0 +1,22 @@
+# Core NLP and ML libraries
+transformers==4.42.0  # Latest stable version
+torch==2.7.1          # PyTorch, recommended for Hugging Face (or a specific build for CUDA if needed)
+    # Latest stable version
+scikit-learn==1.7.1   # For any utility functions like data splitting, simple metrics
+
+# Web Framework for API
+Flask==3.1.1          # If using Flask
+
+# UI Development
+streamlit==1.47.0     # If using Streamlit
+
+# General Utilities
+pandas==2.3.1         # For easy data handling (e.g., reading/writing CSV for simulated data)
+numpy==1.26.4          # Often a dependency of other libraries, good to include explicitly
+
+# For robust NER using spaCy
+spacy==3.8.7          # Latest stable version
+spacy-transformers==1.3.9 # If integrating spaCy with Hugging Face models
+
+# Remember to download the spaCy language model after installing:
+# python -m spacy download en_core_web_sm
