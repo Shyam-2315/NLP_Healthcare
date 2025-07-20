@@ -18,9 +18,10 @@ def get_clinical_note_embedding(note: str, model, tokenizer) -> torch.Tensor:
     """
     # 1. Tokenize the note:
     #    - return_tensors="pt" ensures PyTorch tensors are returned.
-    #    - padding='max_length' pads the sequence to the model's maximum input length.
+    #    - padding='max_length' pads the sequence to the specified max_length.
     #    - truncation=True truncates the sequence if it exceeds the max_length.
-    inputs = tokenizer(note, return_tensors="pt", padding='max_length', truncation=True)
+    #    - max_length=512 explicitly sets the maximum sequence length, which is common for BERT models.
+    inputs = tokenizer(note, return_tensors="pt", padding='max_length', truncation=True, max_length=512)
 
     # 2. Pass the tokens through the model:
     #    - model.eval() ensures the model is in evaluation mode (disables dropout, etc.).
@@ -34,21 +35,15 @@ def get_clinical_note_embedding(note: str, model, tokenizer) -> torch.Tensor:
     #      containing contextualized embeddings for each token.
     #    -.mean(dim=1): Performs mean pooling across the sequence_length dimension to
     #      derive a single vector for the entire sequence.
-    #      Note: For more robust embeddings, especially with padding, masked mean pooling
-    #      (where padding tokens are excluded from the average) is often preferred.
-    #      However, this implementation directly follows the query's instruction.
     sentence_embedding = outputs.last_hidden_state.mean(dim=1)
 
     return sentence_embedding
 
 if __name__ == "__main__":
-    # Define the pre-trained model to be used.
-    # PubMedBERT is chosen for its strong performance on general biomedical tasks.
     model_name = "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext"
 
     print(f"Attempting to load model and tokenizer for: '{model_name}'...")
     try:
-        # Load the AutoTokenizer and AutoModel
         tokenizer = AutoTokenizer.from_pretrained(model_name)
         model = AutoModel.from_pretrained(model_name)
         print("Model and tokenizer loaded successfully.")
@@ -58,17 +53,13 @@ if __name__ == "__main__":
               "You might also need to install the 'transformers' library: pip install transformers torch")
         exit()
 
-    # Define a sample raw clinical note
     sample_clinical_note = "The patient presented with acute onset of severe abdominal pain, localized to the right lower quadrant, accompanied by nausea and vomiting. Physical examination revealed rebound tenderness and guarding. Labs showed elevated white blood cell count. Suspected appendicitis, pending surgical consult."
 
     print(f"\nProcessing the following clinical note:\n---")
     print(sample_clinical_note)
     print(f"---\n")
 
-    # Get the sentence embedding for the clinical note
     embedding = get_clinical_note_embedding(sample_clinical_note, model, tokenizer)
 
     print(f"Successfully obtained sentence embedding.")
-    print(f"Embedding Tensor Shape: {embedding.shape}") # Expected: torch.Size() for base models
-    # Optional: Print a small slice of the embedding to verify non-zero values
-    # print(f"First 5 dimensions of the embedding: {embedding[0, :5].tolist()}")
+    print(f"Embedding Tensor Shape: {embedding.shape}")
